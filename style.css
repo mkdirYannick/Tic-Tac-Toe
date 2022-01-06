@@ -1,0 +1,21 @@
+h1 {
+    color: blue;
+}
+
+#container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border: solid black 1px;
+    height: 100mm;
+    width: 100mm;
+}
+
+.square {
+    display: flex;
+    border: solid black 1px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+}
