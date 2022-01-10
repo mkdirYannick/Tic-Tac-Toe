@@ -19,3 +19,8 @@ h1 {
     align-items: center;
     font-size: 100px;
 }
+
+#result {
+    font-size: 24px;
+    margin-bottom: 32px;
+}

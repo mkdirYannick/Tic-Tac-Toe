@@ -10,3 +10,8 @@ Le premier joueur va cliquer sur l'une des neuf cases, et y inscrire une croix q
 La prochaine fois qu'un clic se produit sur l'une des cases, un rond y sera inscrit et sera encore une fois enregistré dans gameboard, ainsi que dans joueur_2.
 
 Un test devra être fait à chaque nouveau clic, et donc à chaque tour, pour voir si trois mêmes signes sont alignés soit à l'horizontale, soit à la verticale, soit en diagonale.
+
+
+Idées :
+- Faire choisir les croix ou les ronds au joueur 1
+- Mettre un input pour les noms
