@@ -10,7 +10,23 @@
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
-        <div id="result">Result:</div>
+        <div id="players">
+            <div id="player1">
+                <div>Player 1</div>
+                <p>X</p>
+            </div>
+            
+            <div>VS</div>
+            <div id="player2">
+                <div>Player 2</div>
+                <p>O</p>
+                    <div id="player2Btn">
+                        <button id="humanBtn">Human</button>
+                        <button id="computerBtn">Computer</button> 
+                    </div>     
+            </div>   
+        </div>
+        <div id="score">Score:</div>
         <div id="container">
             <div class="square" data-id='0'></div>
             <div class="square" data-id='1'></div>
@@ -22,6 +38,23 @@
             <div class="square" data-id='7'></div>
             <div class="square" data-id='8'></div>
         </div>
-        <button id="clear">Clear</button>
+        <div>The choice is yours:</div>
+        <div id="choice">
+            <button>Next round</button>
+            <p>Or</p>
+            <button id="restart">Restart</button>
+        </div>
+        
+        <div id="result">Result:</div>
+        <div id="resultDisplay"></div>
+
+
+
+
+
+</div> 
+
+
+
 </body>
 </html>

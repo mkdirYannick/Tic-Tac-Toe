@@ -14,4 +14,9 @@ Un test devra être fait à chaque nouveau clic, et donc à chaque tour, pour vo
 
 Idées :
 - Faire choisir les croix ou les ronds au joueur 1
-- Mettre un input pour les noms
+- Mettre un input pour les noms (en fait je sais pas si ça vaut le coup)
+
+- Faire apparaitre seulement le joueur 1 et le choix du joueur 2, puis faire apparaitre la grille après validation.
+
+- Faire choisir entre next round ou restart:
+    Restart recommence à 0, tous paramètres confondus, et next round met à jour le score (faire appaitre ce dernier, même dans le cas d'un seul match) et garde les paramètres choisis (human ou computer).

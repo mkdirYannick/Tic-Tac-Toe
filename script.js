@@ -1,23 +1,44 @@
 const container = document.getElementById('container');
-let squares = document.getElementsByClassName('square');
-let arraySquares = Array.from(squares);
-let clear = document.getElementById('clear');
+const squares = document.getElementsByClassName('square');
+const arraySquares = Array.from(squares);
+const restart = document.getElementById('restart');
+const humanBtn = document.getElementById('humanBtn');
+const computerBtn = document.getElementById('computerBtn');
 let player1Turn = true;
 let player2Turn = false;
-let resultDisplay = document.getElementById('result');
+const resultDisplay = document.getElementById('resultDisplay');
+let gameOver = false;
+let human = false;
+let computer = false;
 
-const game = {
+humanBtn.addEventListener('click', () => {
+    human = true;
+    computer = false;
+    humanBtn.style.border = "solid black 2px";
+    humanBtn.style.borderRadius = "4px";
+    computerBtn.style = '';
+});
+
+computerBtn.addEventListener('click', () => {
+    computer = true;
+    human = false;
+    computerBtn.style.border = "solid black 2px";
+    computerBtn.style.borderRadius = "4px";
+    humanBtn.style = '';
+});
+
+const gameParameters = {
     gameboard: [
         [],[],[],
         [],[],[],
         [],[],[],
     ],
     player1: {
-        signPlacement: [],
+        moves: [],
         name: 'Player 1',
     },
     player2: {
-        signPlacement: [],
+        moves: [],
         name: 'Player 2',
     },
 }
@@ -71,44 +92,74 @@ const checkWin = (player) => {
 
 const playGame = (() => {
     arraySquares.forEach(element => {
-        element.addEventListener('click', function() {
+        element.addEventListener('click', () => {
+            if (gameOver) {
+                return;
+            }
+            if (!human && !computer) {
+                alert("You didn't select a player 2!");
+                return;
+            }
             if (squares[element.dataset.id].textContent == '') {
                 if (player1Turn) {
-                game.gameboard[element.dataset.id].push('X');
-                squares[element.dataset.id].textContent = game.gameboard[element.dataset.id];
-                game.player1.signPlacement.push(element.dataset.id);
+                gameParameters.gameboard[element.dataset.id].push('X');
+                squares[element.dataset.id].textContent = gameParameters.gameboard[element.dataset.id];
+                gameParameters.player1.moves.push(element.dataset.id);
                 player1Turn = false;
                 player2Turn = true;
-                    if (checkWin(game.player1.signPlacement.map(Number))) {
-                        console.log(`${game.player1.name} is the winner!`)
+                    if (checkWin(gameParameters.player1.moves.map(Number))) {
+                        let winnerDisplay = document.createElement('p');
+                        winnerDisplay.id = 'winnerDisplay';
+                        winnerDisplay.textContent = (`${gameParameters.player1.name} is the winner!`);
+                        resultDisplay.appendChild(winnerDisplay);
+                        gameOver = true;
                         return;
                     }
                 } else if (player2Turn) {
-                    game.gameboard[element.dataset.id].push('O');
-                    squares[element.dataset.id].textContent = game.gameboard[element.dataset.id];
-                    game.player2.signPlacement.push(element.dataset.id);
+                    gameParameters.gameboard[element.dataset.id].push('O');
+                    squares[element.dataset.id].textContent = gameParameters.gameboard[element.dataset.id];
+                    gameParameters.player2.moves.push(element.dataset.id);
                     player1Turn = true;
                     player2Turn = false;
-                        if (checkWin(game.player2.signPlacement.map(Number))) {
-                            console.log(`${game.player2.name} is the winner!`);
+                        if (checkWin(gameParameters.player2.moves.map(Number))) {
+                            let winnerDisplay = document.createElement('p');
+                            winnerDisplay.id = 'winnerDisplay';
+                            winnerDisplay.textContent = (`${gameParameters.player2.name} is the winner!`);
+                            resultDisplay.appendChild(winnerDisplay);
+                            gameOver = true;
                             return;
                         }
                 }
             }
-            if (game.player1.signPlacement.length === 5) {
-                console.log("It's a tie :/");
+            if (gameParameters.player1.moves.length === 5) {
+                let tieDisplay = document.createElement('p');
+                tieDisplay.id = 'winnerDisplay';
+                tieDisplay.textContent = ("It's a tie :/");
+                resultDisplay.appendChild(tieDisplay);
+                gameOver = true;
+                return;
             }
         });
     });
 })();
 
-clear.onclick = () => {
+restart.onclick = () => {
     arraySquares.forEach(element => {
        element.textContent = '';
-       game.gameboard[element.dataset.id].pop();
-       game.player1.signPlacement = [];
-       game.player2.signPlacement = [];
+       gameParameters.gameboard[element.dataset.id].pop();
+       gameParameters.player1.moves = [];
+       gameParameters.player2.moves = [];
        player1Turn = true;
        player2Turn = false;
+       resultDisplay.innerHTML = '';
+       gameOver = false;
+       human = false;
+       computer = false;
+       humanBtn.style = '';
+       computerBtn.style = '';
     });
 };
+
+function computerPlay() {
+
+}
