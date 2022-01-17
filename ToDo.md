@@ -20,3 +20,8 @@ Idées :
 
 - Faire choisir entre next round ou restart:
     Restart recommence à 0, tous paramètres confondus, et next round met à jour le score (faire appaitre ce dernier, même dans le cas d'un seul match) et garde les paramètres choisis (human ou computer).
+
+
+
+Idée : Faire choisir en tout début de partie si la personne veut être joueur 1 ou joueur 2.
+Ensuite, faire choisir si l'adversaire est un humain ou ordinateur.

@@ -34,12 +34,6 @@ h1 {
     font-size: 100px;
 }
 
-#result {
-    font-size: 24px;
-    margin-bottom: 32px;
-    margin-top: 24px;
-}
-
 #winnerDisplay {
     font-size: 20px;
     color: rgb(0, 89, 255);
@@ -47,23 +41,26 @@ h1 {
 
 #players {
     display: flex;
+    justify-content: space-around;
     gap: 42px;
     margin-bottom: 24px;
+    width: 470px;
+    height: 100px;
 }
 
-#player1 {
+#player1Click, #player2Click {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 126px;
+    width: 176px;
+    height: 64px;
+    border: solid black 2px;
+    transition: 0.1s;
 }
 
-#player2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 126px;
+#player1Click:hover, #player2Click:hover {
+   border: solid red 1px;
+   box-shadow: 10px 5px 5px red;
 }
 
 #score {
@@ -74,11 +71,26 @@ h1 {
     height: 46px;
 }
 
-
-
-
-
- /* The Modal (background) */
- .modal {
-    /* display: none; */
+#modalBox {
+    display: none;
   }
+
+#modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#nextRoundBtn, #restart {
+    width: 100px;
+}
+
+#player1Btns, #player2Btns {
+    display: none;
+}
+
+.humanBtn, .computerBtn {
+    width: 84px;
+    height: 55px,
+}

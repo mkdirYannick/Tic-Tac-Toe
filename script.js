@@ -2,13 +2,21 @@ const container = document.getElementById('container');
 const squares = document.getElementsByClassName('square');
 const arraySquares = Array.from(squares);
 const restart = document.getElementById('restart');
-const humanBtn = document.getElementById('humanBtn');
-const computerBtn = document.getElementById('computerBtn');
+const humanBtn1 = document.getElementsByClassName('humanBtn1');
+const computerBtn1 = document.getElementById('computerBtn1');
+const humanBtn2 = document.getElementById('humanBtn2');
+const computerBtn2 = document.getElementById('computerBtn2');
 const modal = document.getElementById('modalBox');
 const score = document.getElementById('score');
 const nextRoundBtn = document.getElementById('nextRoundBtn');
+const player1Click = document.getElementById('player1Click');
+const player2Click = document.getElementById('player2Click');
+const player1Btns = document.getElementById('player1Btns');
+const player2Btns = document.getElementById('player2Btns');
 let player1Turn = true;
 let player2Turn = false;
+let player1Selected = false;
+let player2Selected = false;
 const resultDisplay = document.getElementById('resultDisplay');
 let gameOver = false;
 let human = false;
@@ -37,20 +45,44 @@ const gameParameters = {
     }
 }
 
-humanBtn.addEventListener('click', () => {
-    human = true;
-    computer = false;
-    humanBtn.style.border = "solid black 2px";
-    humanBtn.style.borderRadius = "4px";
-    computerBtn.style = '';
+player1Click.addEventListener('click', () => {
+    player1Click.style.border = 'solid red 2px';
+    player2Click.style.border = 'solid black 1px';
+    player1Selected = true;
+    player1Selected = false;
+    player2Btns.style.display = 'block';
+    player1Btns.style.display = 'none';
 });
 
-computerBtn.addEventListener('click', () => {
+player2Click.addEventListener('click', () => {
+    player2Click.style.border = 'solid red 2px';
+    player1Click.style.border = 'solid black 1px';
+    player2Selected = true;
+    player1Selected = false;
+    player1Btns.style.display = 'block';
+    player2Btns.style.display = 'none';
+});
+
+humanBtn2.addEventListener('click', () => {
+    if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
+        return;
+    }
+    human = true;
+    computer = false;
+    humanBtn2.style.border = "solid black 2px";
+    humanBtn2.style.borderRadius = "4px";
+    computerBtn2.style = '';
+});
+
+computerBtn2.addEventListener('click', () => {
+    if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
+        return;
+    }
     computer = true;
     human = false;
-    computerBtn.style.border = "solid black 2px";
-    computerBtn.style.borderRadius = "4px";
-    humanBtn.style = '';
+    computerBtn2.style.border = "solid black 2px";
+    computerBtn2.style.borderRadius = "4px";
+    humanBtn2.style = '';
 });
 
 restart.addEventListener('click', () => {
@@ -70,9 +102,15 @@ restart.addEventListener('click', () => {
         gameOver = false;
         human = false;
         computer = false;
-        humanBtn.style = '';
-        computerBtn.style = '';
-        //    modal.style.display = "none";
+        humanBtn1.style = '';
+        computerBtn1.style = '';
+        humanBtn2.style = '';
+        computerBtn2.style = '';
+        modal.style.display = "none";
+        player1Btns.style.display = 'none';
+        player2Btns.style.display = 'none';
+        player1Click.style = '';
+        player2Click.style = '';
     });
 });
 
@@ -87,7 +125,7 @@ nextRoundBtn.addEventListener('click', () => {
             player1Turn = true;
             player2Turn = false;
             resultDisplay.innerHTML = '';
-        //    modal.style.display = "none";
+            modal.style.display = "none";
         }
     });
     gameOver = false;
@@ -147,7 +185,7 @@ const playGame = (() => {
                 return;
             }
             if (!human && !computer) {
-                alert("You didn't select a player 2!");
+                alert("You didn't select a player!");
                 return;
             }
             if (squares[element.dataset.id].textContent == '') {
@@ -232,7 +270,7 @@ const computerPlayRandom = () => {
 };
 
 let computerPlay = () => {
-    if (computer && player2Turn) {
+    if (computer && player2Turn && gameParameters.player1.moves.length < 5) {
         let computerMove = computerPlayRandom();
         gameParameters.gameboard[computerMove].push('O');
         squares[computerMove].textContent = gameParameters.gameboard[computerMove];
