@@ -48,7 +48,7 @@ h1 {
     height: 100px;
 }
 
-#player1Click, #player2Click {
+#player1, #player2 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,7 +58,7 @@ h1 {
     transition: 0.1s;
 }
 
-#player1Click:hover, #player2Click:hover {
+#player1:hover, #player2:hover {
    border: solid red 1px;
    box-shadow: 10px 5px 5px red;
 }
@@ -87,10 +87,14 @@ h1 {
 }
 
 #player1Btns, #player2Btns {
-    display: none;
+    /* display: none; */
 }
 
 .humanBtn, .computerBtn {
     width: 84px;
     height: 55px,
+}
+
+#start {
+    margin-bottom: 24px;
 }

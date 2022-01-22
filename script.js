@@ -2,10 +2,10 @@ const container = document.getElementById('container');
 const squares = document.getElementsByClassName('square');
 const arraySquares = Array.from(squares);
 const restart = document.getElementById('restart');
-const humanBtn1 = document.getElementsByClassName('humanBtn1');
-const computerBtn1 = document.getElementById('computerBtn1');
-const humanBtn2 = document.getElementById('humanBtn2');
-const computerBtn2 = document.getElementById('computerBtn2');
+const player1Human = document.getElementById('player1Human');
+const player1Computer = document.getElementById('player1Computer');
+const player2Human = document.getElementById('player2Human');
+const player2Computer = document.getElementById('player2Computer');
 const modal = document.getElementById('modalBox');
 const score = document.getElementById('score');
 const nextRoundBtn = document.getElementById('nextRoundBtn');
@@ -13,14 +13,18 @@ const player1Click = document.getElementById('player1Click');
 const player2Click = document.getElementById('player2Click');
 const player1Btns = document.getElementById('player1Btns');
 const player2Btns = document.getElementById('player2Btns');
+const startBtn = document.getElementById('start');
 let player1Turn = true;
 let player2Turn = false;
-let player1Selected = false;
-let player2Selected = false;
+let player1 = '';
+let player2 = '';
+let start = false;
+// let player1Selected = false;
+// let player2Selected = false;
 const resultDisplay = document.getElementById('resultDisplay');
 let gameOver = false;
-let human = false;
-let computer = false;
+// let human = false;
+// let computer = false;
 
 const gameParameters = {
     gameboard: [
@@ -32,57 +36,63 @@ const gameParameters = {
         moves: [],
         name: 'Player 1',
         score: 0,
+        marker: 'X',
     },
     player2: {
         moves: [],
         name: 'Player 2',
         score: 0,
+        marker: 'O',
     },
-    computer: {
-        moves: [],
-        name: 'Computer',
-        score: 0,
-    }
+    // computer: {
+    //     moves: [],
+    //     name: 'Computer',
+    //     score: 0,
+    // }
 }
 
-player1Click.addEventListener('click', () => {
-    player1Click.style.border = 'solid red 2px';
-    player2Click.style.border = 'solid black 1px';
-    player1Selected = true;
-    player1Selected = false;
-    player2Btns.style.display = 'block';
-    player1Btns.style.display = 'none';
-});
-
-player2Click.addEventListener('click', () => {
-    player2Click.style.border = 'solid red 2px';
-    player1Click.style.border = 'solid black 1px';
-    player2Selected = true;
-    player1Selected = false;
-    player1Btns.style.display = 'block';
-    player2Btns.style.display = 'none';
-});
-
-humanBtn2.addEventListener('click', () => {
+player1Human.addEventListener('click', () => {
     if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
         return;
     }
-    human = true;
-    computer = false;
-    humanBtn2.style.border = "solid black 2px";
-    humanBtn2.style.borderRadius = "4px";
-    computerBtn2.style = '';
+    player1 = 'human';
+    // computer = false;
+    player1Human.style.border = "solid black 2px";
+    player1Human.style.borderRadius = "4px";
+    player1Computer.style = '';
 });
 
-computerBtn2.addEventListener('click', () => {
+player1Computer.addEventListener('click', () => {
     if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
         return;
     }
-    computer = true;
-    human = false;
-    computerBtn2.style.border = "solid black 2px";
-    computerBtn2.style.borderRadius = "4px";
-    humanBtn2.style = '';
+    // computer = true;
+    player1 = 'computer';
+    player1Computer.style.border = "solid black 2px";
+    player1Computer.style.borderRadius = "4px";
+    player1Human.style = '';
+});
+
+player2Human.addEventListener('click', () => {
+    if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
+        return;
+    }
+    player2 = 'human';
+    // computer = false;
+    player2Human.style.border = "solid black 2px";
+    player2Human.style.borderRadius = "4px";
+    player2Computer.style = '';
+});
+
+player2Computer.addEventListener('click', () => {
+    if (gameParameters.player1.moves.length >= 1 && gameOver == false) {
+        return;
+    }
+    // computer = true;
+    player2 = 'computer';
+    player2Computer.style.border = "solid black 2px";
+    player2Computer.style.borderRadius = "4px";
+    player2Human.style = '';
 });
 
 restart.addEventListener('click', () => {
@@ -91,24 +101,26 @@ restart.addEventListener('click', () => {
         gameParameters.gameboard[element.dataset.id].pop();
         gameParameters.player1.moves = [];
         gameParameters.player2.moves = [];
-        gameParameters.computer.moves = [];
+        // gameParameters.computer.moves = [];
         gameParameters.player1.score = 0;
         gameParameters.player2.score = 0;
-        gameParameters.computer.score = 0;
+        // gameParameters.computer.score = 0;
         player1Turn = true;
         player2Turn = false;
+        player1 = '';
+        player2 = '';
         resultDisplay.innerHTML = '';
+        startBtn.style = '';
         score.innerHTML = '';
         gameOver = false;
-        human = false;
-        computer = false;
-        humanBtn1.style = '';
-        computerBtn1.style = '';
-        humanBtn2.style = '';
-        computerBtn2.style = '';
+        start = false;
+        // human = false;
+        // computer = false;
+        player1Human.style = '';
+        player1Computer.style = '';
+        player2Human.style = '';
+        player2Computer.style = '';
         modal.style.display = "none";
-        player1Btns.style.display = 'none';
-        player2Btns.style.display = 'none';
         player1Click.style = '';
         player2Click.style = '';
     });
@@ -121,7 +133,7 @@ nextRoundBtn.addEventListener('click', () => {
             gameParameters.gameboard[element.dataset.id].pop();
             gameParameters.player1.moves = [];
             gameParameters.player2.moves = [];
-            gameParameters.computer.moves = [];
+            // gameParameters.computer.moves = [];
             player1Turn = true;
             player2Turn = false;
             resultDisplay.innerHTML = '';
@@ -143,7 +155,6 @@ const checkWin = (player) => {
             if (player.includes(rows[i][j])) {
                 countRows++;
                 if (countRows === 3) {
-                    // console.log('Bidule wins! rows');
                     return true;
                 }
             }
@@ -156,7 +167,6 @@ const checkWin = (player) => {
             if (player.includes(columns[i][j])) {
                 countColumns++;
                 if (countColumns === 3) {
-                    // console.log('Bidule wins! colones');
                     return true;
                 }
             }
@@ -169,23 +179,47 @@ const checkWin = (player) => {
             if (player.includes(diagonals[i][j])) {
                 countDiagonals++;
                 if (countDiagonals === 3) {
-                    // console.log('Bidule wins! DIAGONAKLES');
                     return true;
                 }
             }
         }
-    }             
+    } 
 }
 
+// const resultDisplayTest = (player) => {
+//     if (checkWin(player.moves.map(Number))) {
+//         score.innerHTML = '';
+//         player.score += 1;
+//         let winnerDisplay = document.createElement('p');
+//         winnerDisplay.id = 'winnerDisplay';
+//         winnerDisplay.textContent = (`${player.name} is the winner!`);
+//         resultDisplay.appendChild(winnerDisplay);
+//         let scoreDisplay = document.createElement('p');
+//         scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
+//         score.appendChild(scoreDisplay);
+//         gameOver = true;
+//         modal.style.display = "block";
+//         return;
+//     }
+// }
 
 const playGame = (() => {
+    startBtn.addEventListener('click', () => {
+        if (player1 == '' || player2 == '') {
+            alert('Please select both players');
+            return;
+        } else {
+            start = true;
+            startBtn.style.border = "solid black 2px";
+            startBtn.style.borderRadius = "4px";
+            for (let i = 0; i < 9; i++) {
+               computerPlay(); 
+            }
+        }
+    });
     arraySquares.forEach(element => {
         element.addEventListener('click', () => {
-            if (gameOver) {
-                return;
-            }
-            if (!human && !computer) {
-                alert("You didn't select a player!");
+            if (gameOver || !start) {
                 return;
             }
             if (squares[element.dataset.id].textContent == '') {
@@ -203,11 +237,7 @@ const playGame = (() => {
                         winnerDisplay.textContent = (`${gameParameters.player1.name} is the winner!`);
                         resultDisplay.appendChild(winnerDisplay);
                         let scoreDisplay = document.createElement('p');
-                        if (human) {
-                            scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-                        } else if (computer) {
-                            scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.computer.score}`;
-                        }
+                        scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
                         score.appendChild(scoreDisplay);
                         gameOver = true;
                         modal.style.display = "block";
@@ -215,7 +245,7 @@ const playGame = (() => {
                     }
                     computerPlay();
                 } else if (player2Turn) {
-                    if (human) {
+                    if (player2 == 'human') {
                         gameParameters.gameboard[element.dataset.id].push('O');
                         squares[element.dataset.id].textContent = gameParameters.gameboard[element.dataset.id];
                         gameParameters.player2.moves.push(element.dataset.id);
@@ -235,7 +265,8 @@ const playGame = (() => {
                                 gameOver = true;
                                 modal.style.display = "block";
                                 return;
-                            }  
+                            }
+                        computerPlay();  
                     }
             }
             // In case of a tie game
@@ -256,40 +287,75 @@ const playGame = (() => {
     });
 })();
 
+const computerPlay = () => {
 
-// I am starting by making the computer do random moves
-const computerPlayRandom = () => {
-    let emptySquares = [];
-    for (let i = 0; i < gameParameters.gameboard.length; i++) {
-        if(gameParameters.gameboard[i] == 0) {
-            emptySquares.push(i);
+    const _computerPlayRandom = () => {
+        let emptySquares = [];
+        for (let i = 0; i < gameParameters.gameboard.length; i++) {
+            if(gameParameters.gameboard[i] == 0) {
+                emptySquares.push(i);
+            }
         }
-    }
-    let computerMove = emptySquares[Math.floor(Math.random() * emptySquares.length)];
-    return computerMove;
-};
+        let computerRandomMove = emptySquares[Math.floor(Math.random() * emptySquares.length)];
+        return computerRandomMove;
+    };
 
-let computerPlay = () => {
-    if (computer && player2Turn && gameParameters.player1.moves.length < 5) {
-        let computerMove = computerPlayRandom();
-        gameParameters.gameboard[computerMove].push('O');
-        squares[computerMove].textContent = gameParameters.gameboard[computerMove];
-        gameParameters.computer.moves.push(computerMove);
-        player1Turn = true;
-        player2Turn = false;
-        if (checkWin(gameParameters.computer.moves.map(Number))) {
+    if (gameParameters.player1.moves.length < 5 && start && !gameOver) {
+        if (player1Turn === true && player1 == 'computer') {
+            let computerMove = _computerPlayRandom();
+            gameParameters.gameboard[computerMove].push('X');
+            squares[computerMove].textContent = gameParameters.gameboard[computerMove];
+            gameParameters.player1.moves.push(computerMove);
+            player2Turn = true;
+            player1Turn = false;
+            if (checkWin(gameParameters.player1.moves.map(Number))) {
+                score.innerHTML = '';
+                gameParameters.player1.score += 1;
+                let winnerDisplay = document.createElement('p');
+                winnerDisplay.id = 'winnerDisplay';
+                winnerDisplay.textContent = (`${gameParameters.player1.name} is the winner!`);
+                resultDisplay.appendChild(winnerDisplay);
+                let scoreDisplay = document.createElement('p');
+                scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
+                score.appendChild(scoreDisplay);
+                gameOver = true;
+                modal.style.display = "block";
+                return;
+            }   
+        } else if (player2Turn === true && player2 == 'computer') {
+            let computerMove = computerPlayRandom();
+            gameParameters.gameboard[computerMove].push('O');
+            squares[computerMove].textContent = gameParameters.gameboard[computerMove];
+            gameParameters.player2.moves.push(computerMove);
+            player1Turn = true;
+            player2Turn = false;
+            if (checkWin(gameParameters.player2.moves.map(Number))) {
+                score.innerHTML = '';
+                gameParameters.player2.score += 1;
+                let winnerDisplay = document.createElement('p');
+                winnerDisplay.id = 'winnerDisplay';
+                winnerDisplay.textContent = (`${gameParameters.player2.name} is the winner!`);
+                resultDisplay.appendChild(winnerDisplay);
+                let scoreDisplay = document.createElement('p');
+                scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
+                score.appendChild(scoreDisplay);
+                gameOver = true;
+                modal.style.display = "block";
+                return;
+            }   
+        } 
+        if (gameParameters.player1.moves.length === 5) {
             score.innerHTML = '';
-            gameParameters.computer.score += 1;
-            let winnerDisplay = document.createElement('p');
-            winnerDisplay.id = 'winnerDisplay';
-            winnerDisplay.textContent = (`${gameParameters.computer.name} is the winner!`);
-            resultDisplay.appendChild(winnerDisplay);
+            let tieDisplay = document.createElement('p');
+            tieDisplay.id = 'winnerDisplay';
+            tieDisplay.textContent = ("It's a tie :/");
+            resultDisplay.appendChild(tieDisplay);
             let scoreDisplay = document.createElement('p');
-            scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.computer.score}`;
+            scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
             score.appendChild(scoreDisplay);
             gameOver = true;
             modal.style.display = "block";
             return;
-        }
+        } 
     }
 }
