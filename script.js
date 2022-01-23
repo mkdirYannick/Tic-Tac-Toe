@@ -141,6 +141,9 @@ nextRoundBtn.addEventListener('click', () => {
         }
     });
     gameOver = false;
+    setTimeout(() => {
+        computerPlay();
+    }, 500);
 });
 
 const checkWin = (player) => {
@@ -186,22 +189,22 @@ const checkWin = (player) => {
     } 
 }
 
-// const resultDisplayTest = (player) => {
-//     if (checkWin(player.moves.map(Number))) {
-//         score.innerHTML = '';
-//         player.score += 1;
-//         let winnerDisplay = document.createElement('p');
-//         winnerDisplay.id = 'winnerDisplay';
-//         winnerDisplay.textContent = (`${player.name} is the winner!`);
-//         resultDisplay.appendChild(winnerDisplay);
-//         let scoreDisplay = document.createElement('p');
-//         scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-//         score.appendChild(scoreDisplay);
-//         gameOver = true;
-//         modal.style.display = "block";
-//         return;
-//     }
-// }
+const resultDisplayTest = (player) => {
+    if (checkWin(player.moves.map(Number))) {
+        score.innerHTML = '';
+        player.score += 1;
+        let winnerDisplay = document.createElement('p');
+        winnerDisplay.id = 'winnerDisplay';
+        winnerDisplay.textContent = (`${player.name} is the winner!`);
+        resultDisplay.appendChild(winnerDisplay);
+        let scoreDisplay = document.createElement('p');
+        scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
+        score.appendChild(scoreDisplay);
+        gameOver = true;
+        modal.style.display = "block";
+        return;
+    }
+}
 
 const playGame = (() => {
     startBtn.addEventListener('click', () => {
@@ -213,7 +216,9 @@ const playGame = (() => {
             startBtn.style.border = "solid black 2px";
             startBtn.style.borderRadius = "4px";
             for (let i = 0; i < 9; i++) {
-               computerPlay(); 
+                   setTimeout(() => {
+                    computerPlay();
+                }, i * 750);  
             }
         }
     });
@@ -230,47 +235,29 @@ const playGame = (() => {
                 player1Turn = false;
                 player2Turn = true;
                     if (checkWin(gameParameters.player1.moves.map(Number))) {
-                        score.innerHTML = '';
-                        gameParameters.player1.score += 1;
-                        let winnerDisplay = document.createElement('p');
-                        winnerDisplay.id = 'winnerDisplay';
-                        winnerDisplay.textContent = (`${gameParameters.player1.name} is the winner!`);
-                        resultDisplay.appendChild(winnerDisplay);
-                        let scoreDisplay = document.createElement('p');
-                        scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-                        score.appendChild(scoreDisplay);
-                        gameOver = true;
-                        modal.style.display = "block";
-                        return;
+                        resultDisplayTest(gameParameters.player1);
                     }
-                    computerPlay();
+                    setTimeout(() => {
+                        computerPlay();
+                    }, 750);
                 } else if (player2Turn) {
                     if (player2 == 'human') {
                         gameParameters.gameboard[element.dataset.id].push('O');
                         squares[element.dataset.id].textContent = gameParameters.gameboard[element.dataset.id];
                         gameParameters.player2.moves.push(element.dataset.id);
                     }
-                        player1Turn = true;
-                        player2Turn = false;
-                            if (checkWin(gameParameters.player2.moves.map(Number))) {
-                                score.innerHTML = '';
-                                gameParameters.player2.score += 1;
-                                let winnerDisplay = document.createElement('p');
-                                winnerDisplay.id = 'winnerDisplay';
-                                winnerDisplay.textContent = (`${gameParameters.player2.name} is the winner!`);
-                                resultDisplay.appendChild(winnerDisplay);
-                                let scoreDisplay = document.createElement('p');
-                                scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-                                score.appendChild(scoreDisplay);
-                                gameOver = true;
-                                modal.style.display = "block";
-                                return;
-                            }
-                        computerPlay();  
-                    }
+                    player1Turn = true;
+                    player2Turn = false;
+                        if (checkWin(gameParameters.player2.moves.map(Number))) {
+                            resultDisplayTest(gameParameters.player2);
+                        }
+                    setTimeout(() => {
+                        computerPlay();
+                    }, 750);  
+                }
             }
             // In case of a tie game
-            if (gameParameters.player1.moves.length === 5) {
+            if (gameParameters.player1.moves.length === 5 && !gameOver) {
                 score.innerHTML = '';
                 let tieDisplay = document.createElement('p');
                 tieDisplay.id = 'winnerDisplay';
@@ -309,42 +296,20 @@ const computerPlay = () => {
             player2Turn = true;
             player1Turn = false;
             if (checkWin(gameParameters.player1.moves.map(Number))) {
-                score.innerHTML = '';
-                gameParameters.player1.score += 1;
-                let winnerDisplay = document.createElement('p');
-                winnerDisplay.id = 'winnerDisplay';
-                winnerDisplay.textContent = (`${gameParameters.player1.name} is the winner!`);
-                resultDisplay.appendChild(winnerDisplay);
-                let scoreDisplay = document.createElement('p');
-                scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-                score.appendChild(scoreDisplay);
-                gameOver = true;
-                modal.style.display = "block";
-                return;
+                resultDisplayTest(gameParameters.player1);
             }   
         } else if (player2Turn === true && player2 == 'computer') {
-            let computerMove = computerPlayRandom();
+            let computerMove = _computerPlayRandom();
             gameParameters.gameboard[computerMove].push('O');
             squares[computerMove].textContent = gameParameters.gameboard[computerMove];
             gameParameters.player2.moves.push(computerMove);
             player1Turn = true;
             player2Turn = false;
             if (checkWin(gameParameters.player2.moves.map(Number))) {
-                score.innerHTML = '';
-                gameParameters.player2.score += 1;
-                let winnerDisplay = document.createElement('p');
-                winnerDisplay.id = 'winnerDisplay';
-                winnerDisplay.textContent = (`${gameParameters.player2.name} is the winner!`);
-                resultDisplay.appendChild(winnerDisplay);
-                let scoreDisplay = document.createElement('p');
-                scoreDisplay.textContent = `${gameParameters.player1.score} - ${gameParameters.player2.score}`;
-                score.appendChild(scoreDisplay);
-                gameOver = true;
-                modal.style.display = "block";
-                return;
+                resultDisplayTest(gameParameters.player2);
             }   
         } 
-        if (gameParameters.player1.moves.length === 5) {
+        if (gameParameters.player1.moves.length === 5 && !gameOver) {
             score.innerHTML = '';
             let tieDisplay = document.createElement('p');
             tieDisplay.id = 'winnerDisplay';
